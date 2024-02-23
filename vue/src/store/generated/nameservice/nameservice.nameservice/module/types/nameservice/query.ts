@@ -20,7 +20,6 @@ export interface QueryParamsResponse {
 
 export interface QueryNamesRequest {
   pagination: PageRequest | undefined;
-  name: string;
 }
 
 export interface QueryNamesResponse {
@@ -35,6 +34,14 @@ export interface QueryMinbidpriceRequest {
 export interface QueryMinbidpriceResponse {
   name: string;
   minbidprice: string;
+}
+
+export interface QueryNameRequest {
+  name: string;
+}
+
+export interface QueryNameResponse {
+  whois: Whois | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -134,15 +141,12 @@ export const QueryParamsResponse = {
   },
 };
 
-const baseQueryNamesRequest: object = { name: "" };
+const baseQueryNamesRequest: object = {};
 
 export const QueryNamesRequest = {
   encode(message: QueryNamesRequest, writer: Writer = Writer.create()): Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
     }
     return writer;
   },
@@ -156,9 +160,6 @@ export const QueryNamesRequest = {
       switch (tag >>> 3) {
         case 1:
           message.pagination = PageRequest.decode(reader, reader.uint32());
-          break;
-        case 2:
-          message.name = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -175,11 +176,6 @@ export const QueryNamesRequest = {
     } else {
       message.pagination = undefined;
     }
-    if (object.name !== undefined && object.name !== null) {
-      message.name = String(object.name);
-    } else {
-      message.name = "";
-    }
     return message;
   },
 
@@ -189,7 +185,6 @@ export const QueryNamesRequest = {
       (obj.pagination = message.pagination
         ? PageRequest.toJSON(message.pagination)
         : undefined);
-    message.name !== undefined && (obj.name = message.name);
     return obj;
   },
 
@@ -199,11 +194,6 @@ export const QueryNamesRequest = {
       message.pagination = PageRequest.fromPartial(object.pagination);
     } else {
       message.pagination = undefined;
-    }
-    if (object.name !== undefined && object.name !== null) {
-      message.name = object.name;
-    } else {
-      message.name = "";
     }
     return message;
   },
@@ -450,6 +440,117 @@ export const QueryMinbidpriceResponse = {
   },
 };
 
+const baseQueryNameRequest: object = { name: "" };
+
+export const QueryNameRequest = {
+  encode(message: QueryNameRequest, writer: Writer = Writer.create()): Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryNameRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryNameRequest } as QueryNameRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryNameRequest {
+    const message = { ...baseQueryNameRequest } as QueryNameRequest;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryNameRequest): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryNameRequest>): QueryNameRequest {
+    const message = { ...baseQueryNameRequest } as QueryNameRequest;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryNameResponse: object = {};
+
+export const QueryNameResponse = {
+  encode(message: QueryNameResponse, writer: Writer = Writer.create()): Writer {
+    if (message.whois !== undefined) {
+      Whois.encode(message.whois, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryNameResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryNameResponse } as QueryNameResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.whois = Whois.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryNameResponse {
+    const message = { ...baseQueryNameResponse } as QueryNameResponse;
+    if (object.whois !== undefined && object.whois !== null) {
+      message.whois = Whois.fromJSON(object.whois);
+    } else {
+      message.whois = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryNameResponse): unknown {
+    const obj: any = {};
+    message.whois !== undefined &&
+      (obj.whois = message.whois ? Whois.toJSON(message.whois) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryNameResponse>): QueryNameResponse {
+    const message = { ...baseQueryNameResponse } as QueryNameResponse;
+    if (object.whois !== undefined && object.whois !== null) {
+      message.whois = Whois.fromPartial(object.whois);
+    } else {
+      message.whois = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -460,6 +561,8 @@ export interface Query {
   Minbidprice(
     request: QueryMinbidpriceRequest
   ): Promise<QueryMinbidpriceResponse>;
+  /** Queries a list of Name items. */
+  Name(request: QueryNameRequest): Promise<QueryNameResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -499,6 +602,16 @@ export class QueryClientImpl implements Query {
     return promise.then((data) =>
       QueryMinbidpriceResponse.decode(new Reader(data))
     );
+  }
+
+  Name(request: QueryNameRequest): Promise<QueryNameResponse> {
+    const data = QueryNameRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "nameservice.nameservice.Query",
+      "Name",
+      data
+    );
+    return promise.then((data) => QueryNameResponse.decode(new Reader(data)));
   }
 }
 

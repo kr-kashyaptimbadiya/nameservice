@@ -16,6 +16,10 @@ export interface NameserviceQueryMinbidpriceResponse {
   minbidprice?: string;
 }
 
+export interface NameserviceQueryNameResponse {
+  whois?: NameserviceWhois;
+}
+
 export interface NameserviceQueryNamesResponse {
   whois?: NameserviceWhois[];
 
@@ -341,6 +345,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryName
+   * @summary Queries a list of Name items.
+   * @request GET:/nameservice/nameservice/name/{name}
+   */
+  queryName = (name: string, params: RequestParams = {}) =>
+    this.request<NameserviceQueryNameResponse, RpcStatus>({
+      path: `/nameservice/nameservice/name/${name}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryNames
    * @summary Queries a list of Names items.
    * @request GET:/nameservice/nameservice/names
@@ -352,7 +372,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
       "pagination.reverse"?: boolean;
-      name?: string;
     },
     params: RequestParams = {},
   ) =>

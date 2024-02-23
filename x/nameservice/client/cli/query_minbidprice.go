@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdMinbidprice() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "minbidprice [name]",
-		Short: "use this command 'nameserviced q nameservice minbidprice [name]' for cheking minimum required bid price of name",
+		Short: "check minimum required bid price(minbidprice) of name",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqName := args[0]

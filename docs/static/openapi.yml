@@ -28871,6 +28871,52 @@ paths:
           type: string
       tags:
         - Query
+  '/nameservice/nameservice/name/{name}':
+    get:
+      summary: Queries a list of Name items.
+      operationId: NameserviceNameserviceName
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              whois:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  price:
+                    type: string
+                  minbid:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: name
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /nameservice/nameservice/names:
     get:
       summary: Queries a list of Names items.
@@ -28996,10 +29042,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: name
-          in: query
-          required: false
-          type: string
       tags:
         - Query
   /nameservice/nameservice/params:
@@ -49286,6 +49328,20 @@ definitions:
         type: string
       minbidprice:
         type: string
+  nameservice.nameservice.QueryNameResponse:
+    type: object
+    properties:
+      whois:
+        type: object
+        properties:
+          name:
+            type: string
+          owner:
+            type: string
+          price:
+            type: string
+          minbid:
+            type: string
   nameservice.nameservice.QueryNamesResponse:
     type: object
     properties:

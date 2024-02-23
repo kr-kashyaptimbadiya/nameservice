@@ -45,6 +45,7 @@ const getDefaultState = () => {
 				Params: {},
 				Names: {},
 				Minbidprice: {},
+				Name: {},
 				
 				_Structure: {
 						Params: getStructure(Params.fromPartial({})),
@@ -94,6 +95,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Minbidprice[JSON.stringify(params)] ?? {}
+		},
+				getName: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Name[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -194,6 +201,28 @@ export default {
 				return getters['getMinbidprice']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryMinbidprice API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryName({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryName( key.name)).data
+				
+					
+				commit('QUERY', { query: 'Name', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryName', payload: { options: { all }, params: {...key},query }})
+				return getters['getName']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryName API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

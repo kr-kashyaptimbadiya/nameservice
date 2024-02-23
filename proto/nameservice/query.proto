@@ -26,6 +26,11 @@ service Query {
 		option (google.api.http).get = "/nameservice/nameservice/minbidprice/{name}";
 	}
 
+// Queries a list of Name items.
+	rpc Name(QueryNameRequest) returns (QueryNameResponse) {
+		option (google.api.http).get = "/nameservice/nameservice/name/{name}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -40,7 +45,6 @@ message QueryParamsResponse {
 
 message QueryNamesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  string name = 2;
 }
 
 message QueryNamesResponse {
@@ -55,6 +59,14 @@ message QueryMinbidpriceRequest {
 message QueryMinbidpriceResponse {
   string name = 1;
   string minbidprice = 2;
+}
+
+message QueryNameRequest {
+  string name = 1;
+}
+
+message QueryNameResponse {
+  Whois whois = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3
