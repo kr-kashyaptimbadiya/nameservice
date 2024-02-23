@@ -11,6 +11,11 @@
 
 export type NameserviceMsgBuynameResponse = object;
 
+export interface NameserviceQueryMinbidpriceResponse {
+  name?: string;
+  minbidprice?: string;
+}
+
 export interface NameserviceQueryNamesResponse {
   whois?: NameserviceWhois[];
 
@@ -38,6 +43,7 @@ export interface NameserviceWhois {
   name?: string;
   owner?: string;
   price?: string;
+  minbid?: string;
 }
 
 /**
@@ -315,6 +321,22 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryMinbidprice
+   * @summary Queries a list of Minbidprice items.
+   * @request GET:/nameservice/nameservice/minbidprice/{name}
+   */
+  queryMinbidprice = (name: string, params: RequestParams = {}) =>
+    this.request<NameserviceQueryMinbidpriceResponse, RpcStatus>({
+      path: `/nameservice/nameservice/minbidprice/${name}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

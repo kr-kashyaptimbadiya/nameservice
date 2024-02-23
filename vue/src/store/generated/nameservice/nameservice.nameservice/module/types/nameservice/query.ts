@@ -27,6 +27,15 @@ export interface QueryNamesResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryMinbidpriceRequest {
+  name: string;
+}
+
+export interface QueryMinbidpriceResponse {
+  name: string;
+  minbidprice: string;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -270,12 +279,169 @@ export const QueryNamesResponse = {
   },
 };
 
+const baseQueryMinbidpriceRequest: object = { name: "" };
+
+export const QueryMinbidpriceRequest = {
+  encode(
+    message: QueryMinbidpriceRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryMinbidpriceRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryMinbidpriceRequest,
+    } as QueryMinbidpriceRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryMinbidpriceRequest {
+    const message = {
+      ...baseQueryMinbidpriceRequest,
+    } as QueryMinbidpriceRequest;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryMinbidpriceRequest): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryMinbidpriceRequest>
+  ): QueryMinbidpriceRequest {
+    const message = {
+      ...baseQueryMinbidpriceRequest,
+    } as QueryMinbidpriceRequest;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryMinbidpriceResponse: object = { name: "", minbidprice: "" };
+
+export const QueryMinbidpriceResponse = {
+  encode(
+    message: QueryMinbidpriceResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.minbidprice !== "") {
+      writer.uint32(18).string(message.minbidprice);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryMinbidpriceResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryMinbidpriceResponse,
+    } as QueryMinbidpriceResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.minbidprice = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryMinbidpriceResponse {
+    const message = {
+      ...baseQueryMinbidpriceResponse,
+    } as QueryMinbidpriceResponse;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    if (object.minbidprice !== undefined && object.minbidprice !== null) {
+      message.minbidprice = String(object.minbidprice);
+    } else {
+      message.minbidprice = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryMinbidpriceResponse): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.minbidprice !== undefined &&
+      (obj.minbidprice = message.minbidprice);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryMinbidpriceResponse>
+  ): QueryMinbidpriceResponse {
+    const message = {
+      ...baseQueryMinbidpriceResponse,
+    } as QueryMinbidpriceResponse;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.minbidprice !== undefined && object.minbidprice !== null) {
+      message.minbidprice = object.minbidprice;
+    } else {
+      message.minbidprice = "";
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a list of Names items. */
   Names(request: QueryNamesRequest): Promise<QueryNamesResponse>;
+  /** Queries a list of Minbidprice items. */
+  Minbidprice(
+    request: QueryMinbidpriceRequest
+  ): Promise<QueryMinbidpriceResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -301,6 +467,20 @@ export class QueryClientImpl implements Query {
       data
     );
     return promise.then((data) => QueryNamesResponse.decode(new Reader(data)));
+  }
+
+  Minbidprice(
+    request: QueryMinbidpriceRequest
+  ): Promise<QueryMinbidpriceResponse> {
+    const data = QueryMinbidpriceRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "nameservice.nameservice.Query",
+      "Minbidprice",
+      data
+    );
+    return promise.then((data) =>
+      QueryMinbidpriceResponse.decode(new Reader(data))
+    );
   }
 }
 

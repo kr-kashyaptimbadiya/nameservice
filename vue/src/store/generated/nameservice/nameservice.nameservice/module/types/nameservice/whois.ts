@@ -7,9 +7,10 @@ export interface Whois {
   name: string;
   owner: string;
   price: string;
+  minbid: string;
 }
 
-const baseWhois: object = { name: "", owner: "", price: "" };
+const baseWhois: object = { name: "", owner: "", price: "", minbid: "" };
 
 export const Whois = {
   encode(message: Whois, writer: Writer = Writer.create()): Writer {
@@ -21,6 +22,9 @@ export const Whois = {
     }
     if (message.price !== "") {
       writer.uint32(34).string(message.price);
+    }
+    if (message.minbid !== "") {
+      writer.uint32(42).string(message.minbid);
     }
     return writer;
   },
@@ -40,6 +44,9 @@ export const Whois = {
           break;
         case 4:
           message.price = reader.string();
+          break;
+        case 5:
+          message.minbid = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -66,6 +73,11 @@ export const Whois = {
     } else {
       message.price = "";
     }
+    if (object.minbid !== undefined && object.minbid !== null) {
+      message.minbid = String(object.minbid);
+    } else {
+      message.minbid = "";
+    }
     return message;
   },
 
@@ -74,6 +86,7 @@ export const Whois = {
     message.name !== undefined && (obj.name = message.name);
     message.owner !== undefined && (obj.owner = message.owner);
     message.price !== undefined && (obj.price = message.price);
+    message.minbid !== undefined && (obj.minbid = message.minbid);
     return obj;
   },
 
@@ -93,6 +106,11 @@ export const Whois = {
       message.price = object.price;
     } else {
       message.price = "";
+    }
+    if (object.minbid !== undefined && object.minbid !== null) {
+      message.minbid = object.minbid;
+    } else {
+      message.minbid = "";
     }
     return message;
   },

@@ -48,9 +48,10 @@ func (k msgServer) Buyname(goCtx context.Context, msg *types.MsgBuyname) (*types
 		}
 	}
 	newWhois := types.Whois{
-		Name:  msg.Name,
-		Price: bid.String(),
-		Owner: buyer.String(),
+		Name:   msg.Name,
+		Price:  bid.String(),
+		Owner:  buyer.String(),
+		Minbid: bid.Add(sdk.NewInt64Coin("token", 10)).String(),
 	}
 
 	k.AppendWhois(ctx, newWhois)
