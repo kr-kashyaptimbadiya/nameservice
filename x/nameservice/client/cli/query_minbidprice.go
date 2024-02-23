@@ -3,10 +3,11 @@ package cli
 import (
 	"strconv"
 
+	"nameservice/x/nameservice/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"nameservice/x/nameservice/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -14,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdMinbidprice() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "minbidprice [name]",
-		Short: "Query minbidprice",
+		Short: "use this command 'nameserviced q nameservice minbidprice [name]' for cheking minimum required bid price of name",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqName := args[0]

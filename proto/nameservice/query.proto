@@ -40,6 +40,7 @@ message QueryParamsResponse {
 
 message QueryNamesRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string name = 2;
 }
 
 message QueryNamesResponse {

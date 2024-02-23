@@ -20,6 +20,7 @@ export interface QueryParamsResponse {
 
 export interface QueryNamesRequest {
   pagination: PageRequest | undefined;
+  name: string;
 }
 
 export interface QueryNamesResponse {
@@ -133,12 +134,15 @@ export const QueryParamsResponse = {
   },
 };
 
-const baseQueryNamesRequest: object = {};
+const baseQueryNamesRequest: object = { name: "" };
 
 export const QueryNamesRequest = {
   encode(message: QueryNamesRequest, writer: Writer = Writer.create()): Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
     }
     return writer;
   },
@@ -152,6 +156,9 @@ export const QueryNamesRequest = {
       switch (tag >>> 3) {
         case 1:
           message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.name = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -168,6 +175,11 @@ export const QueryNamesRequest = {
     } else {
       message.pagination = undefined;
     }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
     return message;
   },
 
@@ -177,6 +189,7 @@ export const QueryNamesRequest = {
       (obj.pagination = message.pagination
         ? PageRequest.toJSON(message.pagination)
         : undefined);
+    message.name !== undefined && (obj.name = message.name);
     return obj;
   },
 
@@ -186,6 +199,11 @@ export const QueryNamesRequest = {
       message.pagination = PageRequest.fromPartial(object.pagination);
     } else {
       message.pagination = undefined;
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
     }
     return message;
   },

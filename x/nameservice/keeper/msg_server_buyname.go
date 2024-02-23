@@ -27,7 +27,7 @@ func (k msgServer) Buyname(goCtx context.Context, msg *types.MsgBuyname) (*types
 
 	if isFound {
 		if price.Add(sdk.NewInt64Coin("token", 10)).IsAllGT(bid) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Bid is not high enough, minimum transfer fee is ")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Bid is not high enough, minimum bid price is "+whowner.Minbid)
 		}
 		err := k.bankKeeper.SendCoins(ctx, buyer, central, bid.Add(sdk.NewInt64Coin("token", 5)))
 		if err != nil {

@@ -41,3 +41,4 @@ func (k Keeper) Names(goCtx context.Context, req *types.QueryNamesRequest) (*typ
 
 	return &types.QueryNamesResponse{Whois: whoises, Pagination: pageRes}, nil
 }
+
