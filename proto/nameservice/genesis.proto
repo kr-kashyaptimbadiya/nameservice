@@ -4,11 +4,11 @@ package nameservice.nameservice;
 import "gogoproto/gogo.proto";
 import "nameservice/params.proto";
 // this line is used by starport scaffolding # genesis/proto/import
-
 option go_package = "nameservice/x/nameservice/types";
 
 // GenesisState defines the nameservice module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
+  string address = 2;
 }

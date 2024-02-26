@@ -23,7 +23,8 @@ func (k msgServer) Buyname(goCtx context.Context, msg *types.MsgBuyname) (*types
 	buyer, _ := sdk.AccAddressFromBech32(msg.Creator)
 	owner, _ := sdk.AccAddressFromBech32(whowner.Owner)
 
-	central, _ := sdk.AccAddressFromBech32("cosmos1h7ce483sxcwms77je0pxv3un5ydcgs4jy6ndla")
+	genstate := types.DefaultGenesis()
+	central, _ := sdk.AccAddressFromBech32(genstate.Address)
 
 	if isFound {
 		if price.Add(sdk.NewInt64Coin("token", 10)).IsAllGT(bid) {
@@ -39,7 +40,6 @@ func (k msgServer) Buyname(goCtx context.Context, msg *types.MsgBuyname) (*types
 		}
 	} else {
 		if minPrice.IsAllGT(bid) {
-
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Bid is less than min amount 10token")
 		}
 		err := k.bankKeeper.SendCoins(ctx, buyer, central, bid.Add(sdk.NewInt64Coin("token", 5)))

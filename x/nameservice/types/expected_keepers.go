@@ -9,7 +9,6 @@ import (
 type AccountKeeper interface {
 	GetAccount(ctx sdk.Context, addr sdk.AccAddress) types.AccountI
 	// Methods imported from account should be defined here
-
 }
 
 // BankKeeper defines the expected interface needed to retrieve account balances.

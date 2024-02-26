@@ -22,3 +22,5 @@ func (k Keeper) AppendWhois(ctx sdk.Context, whois types.Whois) {
 	appendVal := k.cdc.MustMarshal(&whois)
 	store.Set([]byte(whois.Name), appendVal)
 }
+
+

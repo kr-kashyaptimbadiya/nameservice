@@ -1,8 +1,8 @@
 accounts:
   - name: alice
-    coins: ["100token", "200000000stake"]
+    coins: ["100000token", "200000000stake"]
   - name: bob
-    coins: ["100token", "100000000stake"]
+    coins: ["100000token", "100000000stake"]
   - name: kashyap
     coins: ["0token", "100000000stake"]
 
