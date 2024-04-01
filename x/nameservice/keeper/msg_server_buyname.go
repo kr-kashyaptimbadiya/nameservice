@@ -23,8 +23,10 @@ func (k msgServer) Buyname(goCtx context.Context, msg *types.MsgBuyname) (*types
 	buyer, _ := sdk.AccAddressFromBech32(msg.Creator)
 	owner, _ := sdk.AccAddressFromBech32(whowner.Owner)
 
-	genstate := types.DefaultGenesis()
-	central, _ := sdk.AccAddressFromBech32(genstate.Address)
+	//genstate := types.DefaultGenesis()
+	//central, _ := sdk.AccAddressFromBech32(genstate.Address)
+
+	central := k.getaddress()
 
 	if isFound {
 		if price.Add(sdk.NewInt64Coin("token", 10)).IsAllGT(bid) {
@@ -34,7 +36,7 @@ func (k msgServer) Buyname(goCtx context.Context, msg *types.MsgBuyname) (*types
 		if err != nil {
 			return nil, err
 		}
-		err1 := k.bankKeeper.SendCoins(ctx, central, owner, bid.Add(price...))
+		err1 := k.bankKeeper.SendCoins(ctx, central, owner, bid)
 		if err1 != nil {
 			return nil, err1
 		}
@@ -51,7 +53,7 @@ func (k msgServer) Buyname(goCtx context.Context, msg *types.MsgBuyname) (*types
 		Name:   msg.Name,
 		Price:  bid.String(),
 		Owner:  buyer.String(),
-		Minbid: bid.Add(sdk.NewInt64Coin("token", 10)).String(),
+		Minbid: bid.Add(sdk.NewInt64Coin("token", 10)).String() + " + you have 5 more token for transection fees",
 	}
 
 	k.AppendWhois(ctx, newWhois)

@@ -14,6 +14,13 @@ client:
     path: "docs/static/openapi.yml"
   vuex:
     path: "vue/src/store"
+
+nameservice:
+  address: cosmos1ukgzuyrq2fqwccsld3m45f38897fsm4hamg3vz
+
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
+
+build:
+  binary: "kashyap"

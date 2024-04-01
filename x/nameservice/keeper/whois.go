@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	base "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 func (k Keeper) GetWhois(ctx sdk.Context, name string) (val types.Whois, found bool) {
@@ -23,4 +24,8 @@ func (k Keeper) AppendWhois(ctx sdk.Context, whois types.Whois) {
 	store.Set([]byte(whois.Name), appendVal)
 }
 
-
+func (k Keeper) getaddress() sdk.AccAddress {
+	central2, _ := sdk.AccAddressFromBech32(types.DefaultGenesis().Address)
+	acc := base.NewBaseAccountWithAddress(central2)
+	return acc.GetAddress()
+}

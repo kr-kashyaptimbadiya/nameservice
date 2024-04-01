@@ -1,7 +1,5 @@
 package types
 
-
-
 // this line is used by starport scaffolding # genesis/types/import
 
 // DefaultIndex is the default capability global index
@@ -11,8 +9,8 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
-		Address: "cosmos1mewlhwjfzarc09e0jsmk2lwmsgz4yysv3wkh9s",
+		Params:  DefaultParams(),
+		Address: "cosmos1c9gnjjs2qnmar3jul9q3x2ns8k88xsnd9cqq5p",
 	}
 }
 

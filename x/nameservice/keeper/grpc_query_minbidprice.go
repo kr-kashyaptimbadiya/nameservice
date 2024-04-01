@@ -21,7 +21,7 @@ func (k Keeper) Minbidprice(goCtx context.Context, req *types.QueryMinbidpriceRe
 
 	if !isFound {
 
-		return &types.QueryMinbidpriceResponse{Name: req.Name, Minbidprice: "10token"}, nil
+		return &types.QueryMinbidpriceResponse{Name: req.Name, Minbidprice: "10token(Minimum Bid) + you have more 5 token for transection fees"}, nil
 	}
 
 	return &types.QueryMinbidpriceResponse{Name: whowner.Name, Minbidprice: whowner.Minbid}, nil
